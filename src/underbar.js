@@ -107,6 +107,30 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+  	var uniqued = [];
+  	
+  	if(arguments[1] === true){
+  		for(var i=0; i<array.length; i++){
+  			if(array[i] !== array[i-1]){
+  				uniqued.push(array[i]);
+  			}
+  		}
+  	} else {
+  		uniqued.push(array[0]);
+  		for(var i=1; i<array.length; i++){
+  			var repeat = 0;
+  			for(var j=0; j<array.length; j++){
+  				if(array[i] === array[j]){
+  					repeat++;
+  				}
+  			}
+  			if (repeat === 1) {
+  				uniqued.push(array[i]);
+  			}
+  		}
+  	}
+  	
+  	return uniqued;
   };
 
 
