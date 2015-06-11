@@ -286,15 +286,21 @@
   				arguments[0][prop] = arguments[i][prop];
   			}
   		}
-  	}
-  	
+  	}	
   	return arguments[0];
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-  	
+ 	for(var i=1; i<arguments.length; i++){
+ 		for(var prop in arguments[i]){
+ 			if((arguments[i][prop] !== arguments[0][prop]) && (arguments[i].hasOwnProperty(prop) !== arguments[0].hasOwnProperty(prop))){
+ 				arguments[0][prop] = arguments[i][prop];
+ 			}
+ 		}
+ 	}
+ 	return arguments[0];
   };
 
 
@@ -338,6 +344,14 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+  	var called = _.once(func);
+  	
+  	if(func.hasOwnProperty){
+  		var newCalled = _.once(func);
+  		return newCalled;
+  	}
+  	
+  	return called;
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -347,6 +361,12 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+  	if(arguments.length < 3) {
+  		return setTimeout(func, wait);
+  	} else {
+  		var delayed = func.apply(this, _.last(arguments, arguments.length-2));
+  		return setTimeout(delayed, wait);
+  	}
   };
 
 
