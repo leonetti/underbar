@@ -345,11 +345,8 @@
   // instead if possible.
   _.memoize = function(func) {
   	var called = _.once(func);
-  	
-  	if(func.hasOwnProperty){
-  		var newCalled = _.once(func);
-  		return newCalled;
-  	}
+
+	//code goes here
   	
   	return called;
   };
@@ -381,6 +378,17 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+  	var shuffled = array.slice();
+  	var temp, random;
+  	
+  	for(var i=0; i<shuffled.length; i++){
+  		random =  Math.floor(Math.random()*shuffled.length);
+  		temp = shuffled[i];
+  		shuffled[i] = shuffled[random];
+  		shuffled[random] = temp;
+  	}
+  	
+  	return shuffled;
   };
 
 
