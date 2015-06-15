@@ -218,24 +218,23 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
-    
-    if(iterator === undefined){
-    	iterator = _.identity;
-    }
-    
-    if(collection.length === 0){
-    	return true;
-    }
-    
-    return Boolean(_.reduce(collection, function(total, value){
-    	if(!value)
-    		return false;
-    	else if(!total)
-    		return false;
-    	else
-    		return true;
-    }));
+
+		var everyed = true;
+
+		if(iterator === undefined){
+	    	iterator = _.identity;
+	    }
+	    if(collection.length === 0){
+	    	return true;
+	    }
+	    _.each(collection, function(value){
+	    	if(!iterator(value) && everyed === true){
+	    		everyed =  false;
+	    	}
+	    });
+	    
+	    return everyed;
+		
   };
   
   
