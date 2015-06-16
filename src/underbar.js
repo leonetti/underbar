@@ -344,21 +344,17 @@
   // instead if possible.
   _.memoize = function(func) {
   
-  	var alreadyCalled = false;
-  	var result;
+  	var called = {};
   	
-  	if(this.arguments !== alreadyCalled){
-  		alreadyCalled = this.arguments;
-  	}
+  	  return function() {
+  	    var args = Array.prototype.slice.call(arguments);
   	
-    return function() {
-      if (!alreadyCalled) {
-        result = func.apply(this, arguments);
-        alreadyCalled = true;
-      }
-      return result;
-    };	
+  	    if (args in called)
+  	      return called[args];
+  	    else
+  	      return (called[args] = func.apply(this, args));
   	
+  	  }	
   };
 
   // Delays a function for the given number of milliseconds, and then calls
