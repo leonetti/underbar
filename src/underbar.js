@@ -343,11 +343,22 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-  	var called = _.once(func);
-
-	//code goes here
+  
+  	var alreadyCalled = false;
+  	var result;
   	
-  	return called;
+  	if(this.arguments !== alreadyCalled){
+  		alreadyCalled = this.arguments;
+  	}
+  	
+    return function() {
+      if (!alreadyCalled) {
+        result = func.apply(this, arguments);
+        alreadyCalled = true;
+      }
+      return result;
+    };	
+  	
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -357,11 +368,16 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+  	var args = [];
+  	
   	if(arguments.length < 3) {
   		return setTimeout(func, wait);
   	} else {
-  		var delayed = func.apply(this, _.last(arguments, arguments.length-2));
-  		return setTimeout(delayed, wait);
+  		for(var i=2; i<arguments.length; i++){
+  			args.push(arguments[i]);
+  		}
+  		func.apply(this, args);
+  		return setTimeout(func, wait)
   	}
   };
 
